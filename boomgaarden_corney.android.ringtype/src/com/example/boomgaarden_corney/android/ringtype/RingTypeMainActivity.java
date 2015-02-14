@@ -1,13 +1,17 @@
 package com.example.boomgaarden_corney.android.ringtype;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,11 +32,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RingTypeMainActivity extends Activity {
-
+	
+	String incomingNumber;
+	int counterCall = 0;
+	int counterIdle = 0;
+	int counterOffHook = 0;
+	
 	private final String DEBUG_TAG = "DEBUG_RINGTYPE";
 	private final String SERVER_URL = "http://54.86.68.241/ringtype/test.php";
 
-	private TextView txtResults;
+	TextView txtResults;
 
 	private String errorMsg;
 	private String ringTypeStr;
@@ -45,6 +54,7 @@ public class RingTypeMainActivity extends Activity {
 	private List<NameValuePair> paramsErrorMsg = new ArrayList<NameValuePair>();
 	private List<NameValuePair> paramsRingType = new ArrayList<NameValuePair>();
 
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,11 +63,12 @@ public class RingTypeMainActivity extends Activity {
 		txtResults = (TextView) this.findViewById(R.id.txtResults);
 
 		// Setup Audio Manager and Provider
-		mRingType = (AudioManager) getSystemService(Context.AUDIO_SERVICE); 
+		mRingType = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+		
 		
 		setDeviceData();
 		showDeviceData();
-		sendDeviceData();
+		//sendDeviceData();
 
 		if (mRingType == null){
 			setErrorMsg("No Ring Type Detected");
@@ -66,7 +77,7 @@ public class RingTypeMainActivity extends Activity {
 		} else{
 			setRingTypeData();
 			showRingTypeData();
-			sendRingTypeData();
+		//	sendRingTypeData();
 		}
 		
 
@@ -293,4 +304,31 @@ public class RingTypeMainActivity extends Activity {
 			showErrorMsg();
 		}
 	}
+	
+	public class RingTypeBroadcastReceiver extends BroadcastReceiver{
+		
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			
+			txtResults.append("HELLO");
+//			if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(TelephonyManager.EXTRA_STATE_RINGING)) {
+//				incomingNumber = intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+//				counterCall = counterCall + 1;
+//				txtResults.setText("Incoming Call From: " + incomingNumber + "\nTotal Calls: " + counterCall + "\n");
+//			}
+//			else if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(
+//	                TelephonyManager.EXTRA_STATE_IDLE)) {
+//				counterIdle = counterIdle + 1;
+//				txtResults.setText("Total Idle: " + counterIdle + "\n");
+//			}
+//			else if (intent.getStringExtra(TelephonyManager.EXTRA_STATE).equals(
+//                    TelephonyManager.EXTRA_STATE_OFFHOOK)) {
+//				counterOffHook = counterOffHook + 1;
+//				txtResults.setText("Total Off Hook: " + counterOffHook + "\n");
+//			}
+			
+			
+		}
+	}
+	
 }
